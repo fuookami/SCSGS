@@ -1,10 +1,10 @@
-#include "provincialcompetitionversion.h"
+#include "ControlWindow.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	ProvincialCompetitionVersion w;
+	ControlWindow w;
 	w.show();
 	return a.exec();
 }
