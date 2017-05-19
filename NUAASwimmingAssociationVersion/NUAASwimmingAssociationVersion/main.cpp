@@ -1,5 +1,6 @@
 #include "ControlWindow.h"
 #include <QtWidgets/QApplication>
+#include <fstream>
 
 int main(int argc, char *argv[])
 {

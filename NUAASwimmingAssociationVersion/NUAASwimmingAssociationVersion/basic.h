@@ -15,6 +15,8 @@ using athlete = struct athleteStr
 	std::string gradeStr;
 	bool hasGrade = false;
 	int thisRank;
+	int group;
+	int line;
 };
 
 bool operator<(const athlete &a, const athlete &b);

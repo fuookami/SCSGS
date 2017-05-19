@@ -1,4 +1,5 @@
 #include "ControlWindow.h"
+#include <ctime>
 
 ControlWindow::ControlWindow(QMainWindow *parent /* = NULL */) :QMainWindow(parent)
 {
@@ -47,7 +48,7 @@ void ControlWindow::startComp(void)
 	thisGame = thisCom->getGameByOrder(currGameOr);
 	thisGame.currentGroup = -1;
 	currLoadGameOr = 0;
-	ui->RegistrationCompetitionName->setText(QString::fromLocal8Bit(QByteArray(thisGame.gameName.c_str())));
+	ui->RegistrationCompetitionName->setText(QString::fromLocal8Bit(QByteArray(thisGame.gameName.c_str())) + QString::fromLocal8Bit("预决赛"));
 
 	screenWin->setLoad(gameNames[0]);
 	monitor->setLoad(gameNames[0]);
@@ -85,9 +86,9 @@ void ControlWindow::continueComp(void)
 	ui->StopBtn->setEnabled(true);
 	ui->ContinueBtn->setEnabled(false);
 	monitor->refresh(thisGame.groups[thisGame.currentGroup]);
-	monitor->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	monitor->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 	screenWin->refresh(thisGame.groups[thisGame.currentGroup]);
-	screenWin->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	screenWin->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 }
 
 void ControlWindow::nextGroup(void)
@@ -122,9 +123,9 @@ void ControlWindow::refreshWin(void)
 {
 	clearWin();
 	monitor->refresh(thisGame.groups[thisGame.currentGroup]);
-	monitor->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	monitor->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 	screenWin->refresh(thisGame.groups[thisGame.currentGroup]);
-	screenWin->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	screenWin->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 	ui->CompetitionName->setText(QString::fromLocal8Bit((thisGame.gameName + Setting::groupNames[thisGame.currentGroup]).c_str()));
 	for (int i(0); i < Setting::LineNums; ++i)
 	{
@@ -185,7 +186,7 @@ void ControlWindow::nextLoad(void)
 	}
 	ui->LastLoad->setEnabled(true);
 	ui->RegistrationCompetitionName->setText
-		(QString::fromLocal8Bit(gameNames[currLoadGameOr].c_str()));
+		(QString::fromLocal8Bit(gameNames[currLoadGameOr].c_str()) + QString::fromLocal8Bit("预决赛"));
 	screenWin->setLoad(gameNames[currLoadGameOr].c_str());
 	monitor->setLoad(gameNames[currLoadGameOr].c_str());
 }
@@ -291,12 +292,12 @@ void ControlWindow::getGrade(int line)
 	thisAth.hasGrade = true;
 	if (qs[line]->isChecked())
 	{
-		thisAth.gradeStr = std::string("犯规");
+		thisAth.gradeStr = std::string("DSQ");
 		thisAth.grade = 10000.0;
 	}
 	else if (dqs[line]->isChecked())
 	{
-		thisAth.gradeStr = std::string("弃权");
+		thisAth.gradeStr = std::string("DNS");
 		thisAth.grade = 100000.0;
 	}
 	else
@@ -316,9 +317,9 @@ void ControlWindow::getGrade(int line)
 		thisAth.gradeStr.clear();
 		if (mins[line]->toPlainText().toDouble() > 0.0)
 		{
-			thisAth.gradeStr = std::string(mins[line]->toPlainText().toLocal8Bit()) + std::string("\'");
+			thisAth.gradeStr = std::string(mins[line]->toPlainText().toLocal8Bit()) + std::string(":");
 		}
-		thisAth.gradeStr.append(std::string(secs[line]->toPlainText().toLocal8Bit()) + std::string("\"")
+		thisAth.gradeStr.append(std::string(secs[line]->toPlainText().toLocal8Bit()) + std::string(".")
 			+ temp);
 	}
 }
@@ -339,7 +340,14 @@ void ControlWindow::clearWin(void)
 
 void ControlWindow::deal(void)
 {
-	std::ofstream fout(std::string("Result/") + thisCom->getCompName() + thisGame.gameName + std::string("比赛结果.txt"));
+	time_t tt = time(NULL);
+	tm* t = localtime(&tt);
+	std::ostringstream timeStr;
+	timeStr << t->tm_year + 1900 << '/' << t->tm_mon + 1 << '/' << t->tm_mday << ' ' << t->tm_hour << ':' << t->tm_min << ':' << t->tm_sec;
+	std::ofstream fout(std::string("Result/") + thisCom->getCompName() + thisGame.gameName + std::string("决赛") + std::string("成绩公告.html"));
+	fout << this->thisCom->getHead();
+	fout << "<td colspan=2 class=xl75 align=right width=550 style='width:413pt'>" << timeStr.str() << "</td></tr>";
+
 	bool isRelay = false;
 	std::array<std::vector<athlete>, 3> athletes;
 	for (int i(0), j(thisGame.groups.size()); i < j; ++i)
@@ -360,12 +368,30 @@ void ControlWindow::deal(void)
 outOfCirculation:
 	if (isRelay)
 	{
+		fout << "<tr height=19 valign=middle style='height:14.25pt'>" <<
+			"<td colspan = 3 height = 19 class = xl74 style = 'height:14.25pt'>" << thisGame.gameName << "</td>" <<
+			"<td></td>" <<
+			"<td class = xl65>决赛成绩公告</td>" <<
+			"<td></td>" <<
+			"</tr>" <<
+			"<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+			"<td height = 19 class = xl68 align = center style = 'height:14.25pt'>名次</td>" <<
+			"<td class = xl68 align = center>道</td>" <<
+			"<td class = xl68 align = center>姓名</td>" <<
+			"<td class = xl68 align = center>单位</td>" <<
+			"<td class = xl70>成绩</td>" <<
+			"<td class = xl68 align = center>备注</td>" <<
+			"</tr>";
+
 		std::vector<athlete> temp;
 		for (int i(0), j(thisGame.groups.size()); i < j; ++i)
 		{
 			for (int p(0); p < Setting::LineNums; ++p)
 			{
-				temp.push_back(thisGame.groups[i][p]);
+				if (!thisGame.groups[i][p].name.empty())
+				{
+					temp.push_back(thisGame.groups[i][p]);
+				}
 			}
 		}
 		std::sort(temp.begin(), temp.end());
@@ -378,7 +404,16 @@ outOfCirculation:
 			}
 			if (temp[p].grade < 10000.0)
 			{
-				fout << j << '\t' << temp[p].name << '\t' << temp[p].gradeStr << std::endl;
+				fout << "<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+					"<td height = 19 class = xl67 align = center style = 'height:14.25pt'><font" <<
+					"color = '#000000'>" << j << "</font></td>" <<
+					"<td class = xl67 align = center><font color = '#000000'>" << temp[p].line << "</font></td>" <<
+					"<td class = xl67 align = center>" << temp[p].name << "</td>" <<
+					"<td class = xl67 align = center>" << teamNames[temp[p].team] << "</td>" <<
+					"<td class = xl69>" << temp[p].gradeStr << "</td>"
+					"<td class = xl67 align = center></td>" <<
+					"</tr>";
+
 				if (j <= 8)
 				{
 					scores[temp[p].team].score += Setting::rankScores[j - 1] * thisGame.weight;
@@ -386,9 +421,26 @@ outOfCirculation:
 			}
 			else
 			{
-				fout << '\t' << temp[p].name << '\t' << temp[p].gradeStr << std::endl;
+				fout << "<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+					"<td height = 19 class = xl67 align = center style = 'height:14.25pt'><font" <<
+					"color = '#000000'></font ></td>" <<
+					"<td class = xl67 align = center><font color = '#000000'>" << temp[p].line << "</font></td>" <<
+					"<td class = xl67 align = center>" << temp[p].name << "</td>" <<
+					"<td class = xl67 align = center>" << teamNames[temp[p].team] << "</td>" <<
+					"<td class = xl69>" << temp[p].gradeStr << "</td>"
+					"<td class = xl67 align = center></td>" <<
+					"</tr>";
+				
 			}
 		}
+		fout << "<tr height=19 valign=middle style='height:14.25pt'>" <<
+			"<td height = 19 class = btd style = 'height:14.25pt'></td>" <<
+			"<td class = btd></td>" <<
+			"<td class = btd></td>" <<
+			"<td class = btd></td>" <<
+			"<td class = btd></td>" <<
+			"<td class = btd></td>" <<
+			"</tr>";
 	}
 	else
 	{
@@ -397,9 +449,24 @@ outOfCirculation:
 		std::sort(athletes[2].begin(), athletes[2].end());
 		for (int i(0); i < 3; ++i)
 		{
+			fout << "<tr height=19 valign=middle style='height:14.25pt'>" <<
+				"<td colspan = 3 height = 19 class = xl74 style = 'height:14.25pt'>" << thisGame.gameName 
+				<< Setting::classDisplay[i] << "组" << "</td>" <<
+				"<td></td>" <<
+				"<td class = xl65>决赛成绩公告</td>" <<
+				"<td></td>" <<
+				"</tr>" <<
+				"<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+				"<td height = 19 class = xl68 align = center style = 'height:14.25pt'>名次</td>" <<
+				"<td class = xl68 align = center>道</td>" <<
+				"<td class = xl68 align = center>姓名</td>" <<
+				"<td class = xl68 align = center>单位</td>" <<
+				"<td class = xl70>成绩</td>" <<
+				"<td class = xl68 align = center>备注</td>" <<
+				"</tr>";
+
 			std::vector<athlete> &thisClass = athletes[i];
 			int j = 1;
-			fout << std::endl << Setting::classDisplay[i] << "组：" << std::endl;
 			for (int p(0), q(thisClass.size()); p < q; ++p)
 			{
 				if (p != 0)
@@ -408,7 +475,16 @@ outOfCirculation:
 				}
 				if (thisClass[p].grade < 10000.0)
 				{
-					fout << j << '\t' << thisClass[p].name << '\t' << thisClass[p].gradeStr << std::endl;
+					fout << "<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+						"<td height = 19 class = xl67 align = center style = 'height:14.25pt'><font" <<
+						"color = '#000000'>" << j << "</font></td>" <<
+						"<td class = xl67 align = center><font color = '#000000'>" << thisClass[p].line << "</font></td>" <<
+						"<td class = xl67 align = center>" << thisClass[p].name << "</td>" <<
+						"<td class = xl67 align = center>" << teamNames[thisClass[p].team] << "</td>" <<
+						"<td class = xl69>" << thisClass[p].gradeStr << "</td>"
+						"<td class = xl67 align = center></td>" <<
+						"</tr>";
+					
 					if (j <= 8)
 					{
 						scores[thisClass[p].team].score += Setting::rankScores[j - 1] * thisGame.weight;
@@ -416,12 +492,41 @@ outOfCirculation:
 				}
 				else
 				{
-					fout << '\t' << thisClass[p].name << '\t' << thisClass[p].gradeStr << std::endl;
+					fout << "<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+						"<td height = 19 class = xl67 align = center style = 'height:14.25pt'><font" <<
+						"color = '#000000'></font></td>" <<
+						"<td class = xl67 align = center><font color = '#000000'>" << thisClass[p].line << "</font></td>" <<
+						"<td class = xl67 align = center>" << thisClass[p].name << "</td>" <<
+						"<td class = xl67 align = center>" << teamNames[thisClass[p].team] << "</td>" <<
+						"<td class = xl69>" << thisClass[p].gradeStr << "</td>"
+						"<td class = xl67 align = center></td>" <<
+						"</tr>";
 				}
 			}
-			fout << std::endl;
+			fout << "<tr height=19 valign=middle style='height:14.25pt'>" <<
+				"<td height = 19 class = btd style = 'height:14.25pt'></td>" <<
+				"<td class = btd></td>" <<
+				"<td class = btd></td>" <<
+				"<td class = btd></td>" <<
+				"<td class = btd></td>" <<
+				"<td class = btd></td>" <<
+				"</tr>";
 		}
 	}
+
+	fout << "<tr height=19 valign=middle style='height:14.25pt'>" <<
+		"<td height = 19 style = 'height:14.25pt'></td>" <<
+		"<td class=xl66 colspan=4 style='mso-ignore:colspan'>备注：<span" <<
+		"style = 'mso-spacerun:yes'></span>  DSQ：犯规<span style = 'mso-spacerun:yes'>" <<
+		"</span>  DNS：弃权</td><td></td><td></td></tr>";
+	fout << "<tr height = 19 valign = middle style = 'height:14.25pt'>" <<
+		"<td height = 19 style = 'height:14.25pt'></td>" <<
+		"<td class = xl71 colspan = 4 style = 'mso-ignore:colspan'>" <<
+		"室温 : " << thisCom->getTempeture() << "℃<span style = 'mso-spacerun:yes'></span>   水温 : " << thisCom->getWaterTempeture() << "℃</td>" <<
+		"<td></td></tr>";
+
+	fout << thisCom->getTail();
+	fout.close();
 }
 
 void ControlWindow::outPutTeamScore(void)

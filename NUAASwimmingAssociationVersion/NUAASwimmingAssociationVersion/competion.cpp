@@ -27,6 +27,8 @@ competion::competion(void)
 	fin >> has_rank;
 	//有多少道次
 	fin >> use_line >> start_line;
+	// 读取室温和水温
+	fin >> tempeture >> waterTempeture;
 	fin.close();
 
 	//读取队伍数与队伍名字
@@ -100,12 +102,26 @@ competion::competion(void)
 				thisAth.hasGrade = false;
 				sin.clear();
 
-				thisGroup[j++] = thisAth;
+				thisAth.group = i + 1;
+				thisAth.line = j;
+				thisGroup[j++] = std::move(thisAth);
 			}
 			thisGame.groups.push_back(thisGroup);
 		}
 		games.push_back(thisGame);
 	}
+	fin.close();
+
+	fin.open("data/head.txt");
+	std::ostringstream sout;
+	sout << fin.rdbuf();
+	head = sout.str();
+	fin.close();
+
+	fin.open("data/tail.txt");
+	sout.str().clear();
+	sout << fin.rdbuf();
+	tail = sout.str();
 	fin.close();
 }
 
@@ -125,6 +141,26 @@ const std::vector<std::string> &competion::getGameNames(void) const {
 const std::string &competion::getCompName(void) const
 {
 	return compName;
+}
+
+const std::string & competion::getTempeture(void) const
+{
+	return tempeture;
+}
+
+const std::string & competion::getWaterTempeture(void) const
+{
+	return waterTempeture;
+}
+
+const std::string & competion::getHead(void) const
+{
+	return head;
+}
+
+const std::string & competion::getTail(void) const
+{
+	return tail;
 }
 
 std::vector<game>::size_type competion::getGameNum(void) const

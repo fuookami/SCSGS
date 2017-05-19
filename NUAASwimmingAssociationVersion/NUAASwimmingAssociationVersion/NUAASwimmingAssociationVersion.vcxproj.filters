@@ -103,6 +103,12 @@
     <Text Include="data\teamsName.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="data\head.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="data\tail.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Whistle.wav">

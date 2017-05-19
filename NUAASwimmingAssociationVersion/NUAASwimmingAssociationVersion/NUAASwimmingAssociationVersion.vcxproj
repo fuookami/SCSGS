@@ -249,6 +249,8 @@
   <ItemGroup>
     <Text Include="data\game.txt" />
     <Text Include="data\gameSetting.txt" />
+    <Text Include="data\head.txt" />
+    <Text Include="data\tail.txt" />
     <Text Include="data\teamsName.txt" />
   </ItemGroup>
   <ItemGroup>
