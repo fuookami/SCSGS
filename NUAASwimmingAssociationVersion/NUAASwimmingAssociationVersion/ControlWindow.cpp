@@ -48,10 +48,10 @@ void ControlWindow::startComp(void)
 	thisGame = thisCom->getGameByOrder(currGameOr);
 	thisGame.currentGroup = -1;
 	currLoadGameOr = 0;
-	ui->RegistrationCompetitionName->setText(QString::fromLocal8Bit(QByteArray(thisGame.gameName.c_str())) + QString::fromLocal8Bit("预决赛"));
+	ui->RegistrationCompetitionName->setText(QString::fromLocal8Bit((thisGame.gameName + std::string("预决赛")).c_str()));
 
-	screenWin->setLoad(gameNames[0]);
-	monitor->setLoad(gameNames[0]);
+	screenWin->setLoad(gameNames[0] + std::string("预决赛"));
+	monitor->setLoad(gameNames[0] + std::string("预决赛"));
 
 	disconnect(ui->StartBtn, SIGNAL(clicked()));
 	ui->StartBtn->setEnabled(false);
@@ -174,8 +174,8 @@ void ControlWindow::lastLoad(void)
 	ui->NextLoad->setEnabled(true);
 	ui->RegistrationCompetitionName->setText
 		(QString::fromLocal8Bit(gameNames[currLoadGameOr].c_str()));
-	screenWin->setLoad(gameNames[currLoadGameOr].c_str());
-	monitor->setLoad(gameNames[currLoadGameOr].c_str());
+	screenWin->setLoad(gameNames[currLoadGameOr] + std::string("预决赛"));
+	monitor->setLoad(gameNames[currLoadGameOr] + std::string("预决赛"));
 }
 
 void ControlWindow::nextLoad(void)
@@ -187,8 +187,8 @@ void ControlWindow::nextLoad(void)
 	ui->LastLoad->setEnabled(true);
 	ui->RegistrationCompetitionName->setText
 		(QString::fromLocal8Bit(gameNames[currLoadGameOr].c_str()) + QString::fromLocal8Bit("预决赛"));
-	screenWin->setLoad(gameNames[currLoadGameOr].c_str());
-	monitor->setLoad(gameNames[currLoadGameOr].c_str());
+	screenWin->setLoad(gameNames[currLoadGameOr] + std::string("预决赛"));
+	monitor->setLoad(gameNames[currLoadGameOr] + std::string("预决赛"));
 }
 
 void ControlWindow::setLine(int line)
