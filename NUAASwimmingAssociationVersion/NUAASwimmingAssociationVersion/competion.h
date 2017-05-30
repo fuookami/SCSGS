@@ -2,11 +2,11 @@
 
 #include "basic.h"
 
-class competion
+class Competion
 {
 public:
-	competion(void);
-	~competion(void);
+	Competion(void);
+	~Competion(void);
 
 	const std::vector<std::string> &getTeamNames(void) const;
 	const std::vector<std::string> &getGameNames(void) const;

@@ -16,7 +16,7 @@ bool operator==(const athlete & a, const athlete & b)
 	return a.name == b.name;
 }
 
-competion::competion(void)
+Competion::Competion(void)
 {
 	std::string tempStr;
 
@@ -125,50 +125,50 @@ competion::competion(void)
 	fin.close();
 }
 
-competion::~competion(void)
+Competion::~Competion(void)
 {
 }
 
-const std::vector<std::string>& competion::getTeamNames(void) const
+const std::vector<std::string>& Competion::getTeamNames(void) const
 {
 	return teamNames;
 }
 
-const std::vector<std::string> &competion::getGameNames(void) const {
+const std::vector<std::string> &Competion::getGameNames(void) const {
 	return gameNames;
 }
 
-const std::string &competion::getCompName(void) const
+const std::string &Competion::getCompName(void) const
 {
 	return compName;
 }
 
-const std::string & competion::getTempeture(void) const
+const std::string & Competion::getTempeture(void) const
 {
 	return tempeture;
 }
 
-const std::string & competion::getWaterTempeture(void) const
+const std::string & Competion::getWaterTempeture(void) const
 {
 	return waterTempeture;
 }
 
-const std::string & competion::getHead(void) const
+const std::string & Competion::getHead(void) const
 {
 	return head;
 }
 
-const std::string & competion::getTail(void) const
+const std::string & Competion::getTail(void) const
 {
 	return tail;
 }
 
-std::vector<game>::size_type competion::getGameNum(void) const
+std::vector<game>::size_type Competion::getGameNum(void) const
 {
 	return games.size();
 }
 
-game &competion::getGameByOrder(const std::vector<game>::size_type & or )
+game &Competion::getGameByOrder(const std::vector<game>::size_type & or )
 {
 	return games[or];
 }

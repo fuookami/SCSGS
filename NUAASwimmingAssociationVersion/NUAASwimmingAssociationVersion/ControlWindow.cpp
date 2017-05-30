@@ -3,7 +3,7 @@
 
 ControlWindow::ControlWindow(QMainWindow *parent /* = NULL */) :QMainWindow(parent)
 {
-	thisCom = new competion();
+	thisCom = new Competion();
 	screenWin = new ScreenWindow(Screen, thisCom->getTeamNames());
 	screenWin->show();
 	monitor = new ScreenWindow(Monitor, thisCom->getTeamNames());
@@ -158,9 +158,9 @@ void ControlWindow::refresh(void)
 		thisRank->thisRank = (thisRank->grade < 10000.0) ? j : -1;
 	}
 	screenWin->refresh(thisGame.groups[thisGame.currentGroup]);
-	screenWin->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	screenWin->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 	monitor->refresh(thisGame.groups[thisGame.currentGroup]);
-	monitor->setGame(thisGame.gameName + Setting::groupNames[thisGame.currentGroup]);
+	monitor->setGame(thisGame.gameName + std::string("预决赛") + Setting::groupNames[thisGame.currentGroup]);
 	ui->CompetitionName->setText(QString::fromLocal8Bit((thisGame.gameName + Setting::groupNames[thisGame.currentGroup]).c_str()));
 	ui->Next->setEnabled(true);
 }

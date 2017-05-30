@@ -140,7 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="competion.cpp" />
+    <ClCompile Include="Competion.cpp" />
     <ClCompile Include="ControlWindow.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ControlWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -159,7 +159,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Public.cpp" />
     <ClCompile Include="ScreenWindow.cpp" />
+    <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Resources\ControlWindow.ui">
@@ -182,8 +184,14 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basic.h" />
-    <ClInclude Include="competion.h" />
+    <ClInclude Include="Athlete.h" />
+    <ClInclude Include="Basic.h" />
+    <ClInclude Include="Competion.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Match.h" />
+    <ClInclude Include="Public.h" />
+    <ClInclude Include="Team.h" />
+    <ClInclude Include="Time.h" />
     <CustomBuild Include="ScreenWindow.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ScreenWindow.h...</Message>

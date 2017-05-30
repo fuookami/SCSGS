@@ -18,7 +18,7 @@ private:
 	ScreenWindow *monitor;
 	Ui::ControlWindow *ui;
 	QMediaPlayer *mediaPlayer;
-	competion *thisCom;
+	Competion *thisCom;
 	game thisGame;
 	int currGameOr;
 	int currLoadGameOr;
