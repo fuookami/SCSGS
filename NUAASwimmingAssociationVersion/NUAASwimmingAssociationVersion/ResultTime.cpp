@@ -1,17 +1,17 @@
-#include "Time.h"
+#include "ResultTime.h"
 
 #include <sstream>
 #include <iomanip>
 #include <memory>
 
-std::ostream & operator<<(std::ostream & os, const Time & time)
+std::ostream & operator<<(std::ostream & os, const ResultTime & time)
 {
 	os << time.toString();
 
 	return os;
 }
 
-std::string Time::toString(void) const
+std::string ResultTime::toString(void) const
 {
 	std::ostringstream sout;
 
@@ -35,33 +35,33 @@ std::string Time::toString(void) const
 	}
 }
 
-Time Time::operator+(const Time & ano) const
+ResultTime ResultTime::operator+(const ResultTime & ano) const
 {
 	if (code & DSQ || code & DNS)
-		return Time(*this);
+		return ResultTime(*this);
 	
-	Time newTime(Normal, msec);
+	ResultTime newTime(Normal, msec);
 	newTime += ano;
 	return std::move(newTime);
 }
 
-Time Time::operator+(const unsigned int _msec) const
+ResultTime ResultTime::operator+(const unsigned int _msec) const
 {
 	if (code & DSQ || code & DNS)
-		return Time(*this);
+		return ResultTime(*this);
 
-	Time newTime(Normal, msec);
+	ResultTime newTime(Normal, msec);
 	newTime += _msec;
 	return std::move(newTime);
 }
 
-Time & Time::operator+=(const Time & ano)
+ResultTime & ResultTime::operator+=(const ResultTime & ano)
 {
 	this->operator+=(ano.msec);
 	return *this;
 }
 
-Time & Time::operator+=(const unsigned int _msec)
+ResultTime & ResultTime::operator+=(const unsigned int _msec)
 {
 	if (code & DSQ || code & DNS)
 		return *this;
@@ -73,33 +73,33 @@ Time & Time::operator+=(const unsigned int _msec)
 	return *this;
 }
 
-Time Time::operator-(const Time & ano) const
+ResultTime ResultTime::operator-(const ResultTime & ano) const
 {
 	if (code & DSQ || code & DNS)
-		return Time(*this);
+		return ResultTime(*this);
 
-	Time newTime(Normal, msec);
+	ResultTime newTime(Normal, msec);
 	newTime -= ano;
 	return std::move(newTime);
 }
 
-Time Time::operator-(const unsigned int _msec) const
+ResultTime ResultTime::operator-(const unsigned int _msec) const
 {
 	if (code & DSQ || code & DNS)
-		return Time(*this);
+		return ResultTime(*this);
 
-	Time newTime(Normal, msec);
+	ResultTime newTime(Normal, msec);
 	newTime -= _msec;
 	return std::move(newTime);
 }
 
-Time & Time::operator-=(const Time & ano)
+ResultTime & ResultTime::operator-=(const ResultTime & ano)
 {
 	this->operator-=(ano.msec);
 	return *this;
 }
 
-Time & Time::operator-=(const unsigned int _msec)
+ResultTime & ResultTime::operator-=(const unsigned int _msec)
 {
 	if (code & DSQ || code & DNS)
 		return *this;
@@ -111,17 +111,17 @@ Time & Time::operator-=(const unsigned int _msec)
 	return *this;
 }
 
-Time Time::operator*(const unsigned int times)
+ResultTime ResultTime::operator*(const unsigned int times)
 {
 	if (code & DSQ || code & DNS)
-		return Time(*this);
+		return ResultTime(*this);
 
-	Time newTime(Normal, msec);
+	ResultTime newTime(Normal, msec);
 	newTime -= times;
 	return std::move(newTime);
 }
 
-Time & Time::operator*=(const unsigned int times)
+ResultTime & ResultTime::operator*=(const unsigned int times)
 {
 	if (code & DSQ || code & DNS)
 		return *this;

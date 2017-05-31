@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Time.h"
+#include "ResultTime.h"
 #include <vector>
 #include <array>
 
@@ -20,7 +20,7 @@ struct Athlete
 		unsigned int groupIndex;
 		unsigned int lineIndex;
 
-		Time time;
+		ResultTime time;
 		unsigned int groupRank;
 		unsigned int rank;
 		unsigned int getedGrade;
@@ -54,15 +54,18 @@ struct Team
 
 struct Line
 {
+	unsigned int gameIndex;
+	unsigned int groupIndex;
 	unsigned int lineIndex;
 	unsigned int athleteCode;
 	Athlete *pAthlete;
-	Time time;
+	ResultTime time;
 	unsigned int groupRank;
 };
 
 struct Group
 {
+	unsigned int gameIndex;
 	unsigned int groupIndex;
 	std::array<Line, Setting::LineNums> lines;
 	bool hasOnceInput = false;
@@ -74,6 +77,6 @@ struct Game
 	std::string gameName;
 	// 是否是团队项目
 	// 积分倍数
-	Time matchRecord;
+	ResultTime matchRecord;
 	std::vector<Group> groups;
 };
