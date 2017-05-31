@@ -93,22 +93,10 @@
     <ClInclude Include="Public.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Athlete.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Basic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Competion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Match.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Basic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

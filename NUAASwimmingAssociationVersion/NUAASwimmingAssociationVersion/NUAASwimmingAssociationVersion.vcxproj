@@ -184,13 +184,9 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Athlete.h" />
-    <ClInclude Include="Basic.h" />
     <ClInclude Include="Competion.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Match.h" />
+    <ClInclude Include="Basic.h" />
     <ClInclude Include="Public.h" />
-    <ClInclude Include="Team.h" />
     <ClInclude Include="Time.h" />
     <CustomBuild Include="ScreenWindow.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
